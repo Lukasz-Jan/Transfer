@@ -40,12 +40,11 @@ public class JsonService {
 
 	@Autowired
 	private AccountFactory accountCreator;
-
-	private final File schemaFile = new File(jsonSchemaPath);
 	
 	@PostConstruct
 	private void init() throws JsonProcessingException, IOException {
 
+		final File schemaFile = new File(jsonSchemaPath);
 		final File jsonFile = new File(jsonFilePath);
 		final InputStream targetSchemaStream = new FileInputStream(schemaFile);
 		final JsonSchemaFactory factory = JsonSchemaFactory.getInstance(VersionFlag.V201909);
