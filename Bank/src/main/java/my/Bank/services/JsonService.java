@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Set;
 import javax.annotation.PostConstruct;
+
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.networknt.schema.JsonSchema;
 import com.networknt.schema.JsonSchemaFactory;
 import com.networknt.schema.ValidationMessage;
@@ -70,5 +73,9 @@ public class JsonService {
 				}
 			}
 		}
+		
+		IOUtils.closeQuietly(targetSchemaStream);
 	}
+	
+	
 }
