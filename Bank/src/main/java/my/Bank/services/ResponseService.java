@@ -14,19 +14,24 @@ import my.Bank.TransferRequestType;
 public class ResponseService {
 
 	private static final Logger logger = LoggerFactory.getLogger(ResponseService.class);
-	
+
 	@Value("${responseQueue}")
 	private String respQueName;
-	
-    @Autowired
-    JmsTemplate jmsTemplate;
+
+	@Autowired
+	JmsTemplate jmsTemplate;
 
 	public void sendResponseMessage(TransferRequestType requestType, OutcomeType outcome) {
 
-    	String responseXmlAsString = new Response.Builder().setRequestType(requestType).setOutcome(outcome).buildResponseXmlAsString();
-    	
-    	jmsTemplate.convertAndSend(respQueName, responseXmlAsString);
-    	logger.info("Response sent");
-    	logger.debug(responseXmlAsString);
-    }
+		String responseXmlAsString = new Response.Builder().setRequestType(requestType).setOutcome(outcome)
+				.buildResponseXmlAsString();
+
+		if (responseXmlAsString != null) {
+			jmsTemplate.convertAndSend(respQueName, responseXmlAsString);
+			logger.info("Response sent");
+			logger.debug(responseXmlAsString);
+		}
+		else logger.info("Message to response queue not sent");
+		
+	}
 }
