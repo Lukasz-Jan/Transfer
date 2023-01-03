@@ -24,6 +24,9 @@ public class RequestService {
 
 	@Autowired
 	private AcctRepo acctRepo;
+	
+    @Autowired
+    JsonService jsonSrv;
 		
 	@Transactional(isolation = Isolation.READ_COMMITTED, propagation = Propagation.REQUIRED)
 	public OutcomeType processRequest(TransferRequestType req) {
@@ -46,13 +49,14 @@ public class RequestService {
 
 			String accountNumber = req.getTargetAccountNumber();
 			BigDecimal currentAmount = acct.getCurAmt();
-
+			
 			if (req.getAction() == ActionType.CREDIT) {
 
 				BigDecimal newAmount = currentAmount.add(quantity);
 				acct.setCurAmt(newAmount);
 				acctRepo.save(acct);
 				logger.info("Account " + accountNumber + " income " + quantity + " balance " + newAmount);
+				changeJsonFile(accountNumber, req.getCurrency(), newAmount);
 				return OutcomeType.ACCEPT;
 			} else {
 
@@ -61,6 +65,7 @@ public class RequestService {
 					acct.setCurAmt(newAmount);
 					acctRepo.saveAndFlush(acct);
 					logger.info("Account " + accountNumber + " outcome " + quantity + " balance " + newAmount);
+					changeJsonFile(accountNumber, req.getCurrency(), newAmount);
 					return OutcomeType.ACCEPT;
 				} else {
 					logger.info("Account " + accountNumber + " not enough funds");
@@ -76,4 +81,8 @@ public class RequestService {
 		return OutcomeType.REJECT;
 	}
 
+	private void changeJsonFile(String acct, String currency, BigDecimal newAmount) {
+		
+		jsonSrv.changeAmountForAccount(acct, currency, newAmount);
+	}
 }
