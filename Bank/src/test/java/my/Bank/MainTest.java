@@ -91,7 +91,7 @@ public class MainTest {
 	@Test
 	public void jaxbSendtMessageOutcome() throws InterruptedException {
 
-		String accountId = "000142006678";
+		String accountId = "900142006678";
 		String currency = "SEK";
 		BigDecimal amount = new BigDecimal(100);
 
