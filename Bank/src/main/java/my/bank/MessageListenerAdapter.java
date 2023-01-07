@@ -34,20 +34,23 @@ public class MessageListenerAdapter implements MessageListener {
 
 	private static final Logger logger = LoggerFactory.getLogger(MessageListenerAdapter.class);
 
-	private final String xsdRequestPath = "src/main/xsd/transfer-request-response.xsd";
-	private SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-	private Schema reqRespSchema;
-	private XMLInputFactory xif = XMLInputFactory.newInstance();
+	private final String xsdRequestPath;
+	private final SchemaFactory sf;
+	private final Schema requestResponseSchema;
+
+	private final RequestService reqSrv;
+	private final ResponseService respSrv;
 
 	@Autowired
-	private RequestService reqSrv;
-
-	@Autowired
-	private ResponseService respSrv;
-
-	public MessageListenerAdapter() throws Exception {
+	public MessageListenerAdapter(RequestService reqSrv, ResponseService respSrv) throws Exception {
+		
+		this.reqSrv = reqSrv;
+		this.respSrv = respSrv;
+		xsdRequestPath = "src/main/xsd/transfer-request-response.xsd";
+		sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+		
 		try {
-			reqRespSchema = sf.newSchema(new StreamSource(xsdRequestPath));
+			requestResponseSchema = sf.newSchema(new StreamSource(xsdRequestPath));
 		} catch (SAXException e) {
 			throw e;
 		}
@@ -84,8 +87,10 @@ public class MessageListenerAdapter implements MessageListener {
 
 			JAXBContext ctx = JAXBContext.newInstance(TransferRequestType.class);
 			Unmarshaller u = ctx.createUnmarshaller();
-			u.setSchema(reqRespSchema);
+			u.setSchema(requestResponseSchema);
 
+			final XMLInputFactory xif = XMLInputFactory.newInstance();
+			
 			reader = xif.createXMLStreamReader(inputStream);
 			jaxEl = u.unmarshal(reader, TransferRequestType.class);
 			r = jaxEl.getValue();
