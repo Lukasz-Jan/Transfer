@@ -1,2 +1,2 @@
-# Transfer
-Task from bank company.
+# Transfer program
+The small bank.
