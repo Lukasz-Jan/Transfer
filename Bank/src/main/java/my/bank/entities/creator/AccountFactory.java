@@ -1,4 +1,4 @@
-package my.Bank.entities.creator;
+package my.bank.entities.creator;
 
 import java.math.BigDecimal;
 import org.slf4j.Logger;
@@ -6,9 +6,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import my.Bank.entities.Account;
-import my.Bank.entities.AccountPK;
-import my.Bank.jpa.repos.AcctRepo;
+
+import my.bank.entities.Account;
+import my.bank.entities.AccountPK;
+import my.bank.jpa.repos.AcctRepo;
 
 
 @Component

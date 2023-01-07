@@ -1,4 +1,4 @@
-package my.Bank.services;
+package my.bank.services;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -11,10 +11,10 @@ import javax.xml.bind.Marshaller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import my.Bank.ObjectFactory;
-import my.Bank.OutcomeType;
-import my.Bank.TransferRequestType;
-import my.Bank.TransferResponseType;
+import my.bank.ObjectFactory;
+import my.bank.OutcomeType;
+import my.bank.TransferRequestType;
+import my.bank.TransferResponseType;
 
 public class Response {
 

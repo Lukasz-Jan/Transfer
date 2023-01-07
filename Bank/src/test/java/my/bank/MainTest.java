@@ -1,4 +1,4 @@
-package my.Bank;
+package my.bank;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,10 +18,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.context.ApplicationContext;
 import org.springframework.jms.core.JmsTemplate;
-import my.Bank.entities.Account;
-import my.Bank.entities.AccountPK;
-import my.Bank.entities.creator.AccountFactory;
-import my.Bank.jpa.repos.AcctRepo;
+
+import my.bank.ActionType;
+import my.bank.entities.Account;
+import my.bank.entities.AccountPK;
+import my.bank.entities.creator.AccountFactory;
+import my.bank.jpa.repos.AcctRepo;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)

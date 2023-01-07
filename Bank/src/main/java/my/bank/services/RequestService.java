@@ -1,4 +1,4 @@
-package my.Bank.services;
+package my.bank.services;
 
 import java.math.BigDecimal;
 import org.slf4j.Logger;
@@ -9,12 +9,12 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import my.Bank.ActionType;
-import my.Bank.OutcomeType;
-import my.Bank.TransferRequestType;
-import my.Bank.entities.Account;
-import my.Bank.entities.AccountPK;
-import my.Bank.jpa.repos.AcctRepo;
+import my.bank.ActionType;
+import my.bank.OutcomeType;
+import my.bank.TransferRequestType;
+import my.bank.entities.Account;
+import my.bank.entities.AccountPK;
+import my.bank.jpa.repos.AcctRepo;
 
 
 @Component

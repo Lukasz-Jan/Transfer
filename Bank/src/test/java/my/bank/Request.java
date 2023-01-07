@@ -1,4 +1,4 @@
-package my.Bank;
+package my.bank;
 
 import java.io.StringWriter;
 import java.io.Writer;
@@ -9,6 +9,10 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+
+import my.bank.ActionType;
+import my.bank.ObjectFactory;
+import my.bank.TransferRequestType;
 
 public class Request {
 

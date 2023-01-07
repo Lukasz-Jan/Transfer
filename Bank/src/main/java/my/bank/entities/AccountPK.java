@@ -1,4 +1,4 @@
-package my.Bank.entities;
+package my.bank.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;

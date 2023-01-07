@@ -1,4 +1,4 @@
-package my.Bank.services;
+package my.bank.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
-import my.Bank.OutcomeType;
-import my.Bank.TransferRequestType;
+import my.bank.OutcomeType;
+import my.bank.TransferRequestType;
 
 @Component
 public class ResponseService {

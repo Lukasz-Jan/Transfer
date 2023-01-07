@@ -1,4 +1,4 @@
-package my.Bank.entities.creator;
+package my.bank.entities.creator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -13,9 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.transaction.annotation.Transactional;
-import my.Bank.entities.Account;
-import my.Bank.entities.AccountPK;
-import my.Bank.jpa.repos.AcctRepo;
+
+import my.bank.entities.Account;
+import my.bank.entities.AccountPK;
+import my.bank.entities.creator.AccountFactory;
+import my.bank.jpa.repos.AcctRepo;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)

@@ -39,7 +39,7 @@
 							<xsdOptions>
 								<xsdOption>
 									<xsd>${basedir}/src/main/xsd/transfer-request-response.xsd</xsd>
-									<packagename>my.Bank</packagename>
+									<packagename>my.bank</packagename>
 								</xsdOption>
 							</xsdOptions>
 						</configuration>
