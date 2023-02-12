@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.transaction.annotation.Transactional;
 
 import my.bank.entities.Account;
+import my.bank.entities.AccountDto;
 import my.bank.entities.AccountPK;
 import my.bank.entities.creator.AccountFactory;
 import my.bank.jpa.repos.AcctRepo;
@@ -44,7 +45,9 @@ public class AccountFactoryTest {
 		
 		String acctId = "123456789012";
 		String currency = "USD";
-		accountCreator.setAcctId(acctId).setCurrency(currency).buildZeroMoneyEntity();
+		
+		AccountDto acctDto = new AccountDto.AccountDtoBuilder().setAcctId(acctId).setCurrency(currency).buildDto();
+		accountCreator.newEntity(acctDto);
 		
 		AccountPK pK = new AccountPK.AccountPKBuilder().setAcctId(acctId).setCurrency(currency).build();
 		Optional<Account> accountOpt = acctRepo.findById(pK);
@@ -82,20 +85,23 @@ public class AccountFactoryTest {
 
 		String setAcctId = "0034567800000";
 		String setCurrency = "EUR";
-		Account acct = accountCreator.setAcctId(setAcctId).setCurrency(setCurrency).buildZeroMoneyEntity();
-		
-		assertEquals(null, acct);
+
+		AccountDto acctDto = new AccountDto.AccountDtoBuilder().setAcctId(setAcctId).setCurrency(setCurrency).buildDto();
+		Account account = accountCreator.newEntity(acctDto);
+
+		assertEquals(null, account);
 	}
 	
 	@Test
 	@Transactional
 	public void createAccountCurrencyNotSet() {
-
+		
 		String setAcctId = "034567800000";
 		//String setCurrency = "EUR";
-		Account acct = accountCreator.setAcctId(setAcctId).buildEntity();
-		
-		assertEquals(null, acct);
+		AccountDto acctDto = new AccountDto.AccountDtoBuilder().setAcctId(setAcctId).buildDto();
+		Account account = accountCreator.newEntity(acctDto);
+
+		assertEquals(null, account);
 	}	
 
 	@Test
@@ -104,9 +110,11 @@ public class AccountFactoryTest {
 
 		String setAcctId = "034567800000 ";
 		String setCurrency = "EU";
-		Account acct = accountCreator.setAcctId(setAcctId).setCurrency(setCurrency).buildEntity();
 		
-		assertEquals(null, acct);
+		AccountDto acctDto = new AccountDto.AccountDtoBuilder().setAcctId(setAcctId).setCurrency(setCurrency).buildDto();
+		Account account = accountCreator.newEntity(acctDto);
+		
+		assertEquals(null, account);
 	}
 
 	@Test
@@ -115,7 +123,9 @@ public class AccountFactoryTest {
 	
 		String acctId = "123456780000";
 		String setCurrency = "EUR";
-		accountCreator.setAcctId(acctId).setCurrency(setCurrency).buildZeroMoneyEntity();
+		
+		AccountDto acctDto = new AccountDto.AccountDtoBuilder().setAcctId(acctId).setCurrency(setCurrency).buildDto();
+		Account account = accountCreator.newEntity(acctDto);		
 		
 		AccountPK pK = new AccountPK.AccountPKBuilder().setAcctId(acctId).setCurrency(setCurrency).build();
 		Optional<Account> accountOpt = acctRepo.findById(pK);
@@ -124,7 +134,7 @@ public class AccountFactoryTest {
 		
 		assertEquals(present, true);
 
-		Account account = accountOpt.get();
+		account = accountOpt.get();
 		String currentCurrency = account.getId().getCurrency();
 		assertEquals(setCurrency, currentCurrency);
 	}
@@ -135,7 +145,9 @@ public class AccountFactoryTest {
 	
 		String setAcctId = "003456780000";
 		String setCurrency = "EUR";
-		accountCreator.setAcctId(setAcctId).setCurrency(setCurrency).buildZeroMoneyEntity();
+		
+		AccountDto acctDto = new AccountDto.AccountDtoBuilder().setAcctId(setAcctId).setCurrency(setCurrency).buildDto();
+		Account account = accountCreator.newEntity(acctDto);		
 		
 		AccountPK pK = new AccountPK.AccountPKBuilder().setAcctId(setAcctId).setCurrency(setCurrency).build();
 
@@ -143,7 +155,7 @@ public class AccountFactoryTest {
 		boolean present = accountOpt.isPresent();
 		assertEquals(present, true);
 
-		Account account = accountOpt.get();
+		account = accountOpt.get();
 		String acctId = account.getId().getAcctId();
 		assertEquals(setAcctId, acctId);
 	}
@@ -154,22 +166,24 @@ public class AccountFactoryTest {
 	
 		String setAcctId = "003456780009";
 		String setCurrency = "EUR";
-		Account accOne = accountCreator.setAcctId(setAcctId).setCurrency(setCurrency).buildZeroMoneyEntity();
+		
+		AccountDto acctDto = new AccountDto.AccountDtoBuilder().setAcctId(setAcctId).setCurrency(setCurrency).buildDto();
+		Account accOne = accountCreator.newEntity(acctDto);		
 		
 		AccountPK pK = new AccountPK.AccountPKBuilder().setAcctId(setAcctId).setCurrency(setCurrency).build();
 		Optional<Account> accountOpt = acctRepo.findById(pK);
 		assertEquals(accountOpt.isPresent(), true);
-
 		
+		acctDto = new AccountDto.AccountDtoBuilder().setAcctId(setAcctId).setCurrency(setCurrency).buildDto();
+		Account accTwo = accountCreator.newEntity(acctDto);
 		
-		Account accTwo = accountCreator.setAcctId(setAcctId).setCurrency(setCurrency).buildZeroMoneyEntity();
 		assertEquals(accTwo, null);
 		
+		acctDto = new AccountDto.AccountDtoBuilder().setAcctId(setAcctId).setCurrency(setCurrency).buildDto();
+		Account accThree = accountCreator.newEntity(acctDto);
 
-		Account accThree = accountCreator.setAcctId(setAcctId).setCurrency(setCurrency).buildZeroMoneyEntity();
 		assertEquals(accThree, null);
-		
-		
+
 		assertNotNull(accOne, "Account One NULL !");
 	}
 	
@@ -181,19 +195,23 @@ public class AccountFactoryTest {
 		String setCurrency = "EUR";
 		BigDecimal amount = new BigDecimal("88.33");
 		
-		Account accOne = accountCreator.setAcctId(setAcctId).setCurrency(setCurrency).setCurAmt(amount).buildEntity();
+		AccountDto acctDto = new AccountDto.AccountDtoBuilder().setAcctId(setAcctId).setCurrency(setCurrency).setAmount(amount).buildDto();
+		Account accOne = accountCreator.newEntity(acctDto);
+		
 		
 		AccountPK pK = new AccountPK.AccountPKBuilder().setAcctId(setAcctId).setCurrency(setCurrency).build();
 		Optional<Account> accountOpt = acctRepo.findById(pK);
 		assertEquals(accountOpt.isPresent(), true);
 
-		
-		
-		Account accTwo = accountCreator.setAcctId(setAcctId).setCurrency(setCurrency).setCurAmt(amount).buildEntity();
+		acctDto = new AccountDto.AccountDtoBuilder().setAcctId(setAcctId).setCurrency(setCurrency).setAmount(amount).buildDto();
+		Account accTwo = accountCreator.newEntity(acctDto);
+
 		assertEquals(accTwo, null);
 		
-		
-		Account accThree = accountCreator.setAcctId(setAcctId).setCurrency(setCurrency).setCurAmt(amount).buildEntity();
+
+		acctDto = new AccountDto.AccountDtoBuilder().setAcctId(setAcctId).setCurrency(setCurrency).setAmount(amount).buildDto();
+		Account accThree = accountCreator.newEntity(acctDto);
+
 		assertEquals(accThree, null);
 		
 		

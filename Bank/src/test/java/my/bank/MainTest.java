@@ -21,6 +21,7 @@ import org.springframework.jms.core.JmsTemplate;
 
 import my.bank.ActionType;
 import my.bank.entities.Account;
+import my.bank.entities.AccountDto;
 import my.bank.entities.AccountPK;
 import my.bank.entities.creator.AccountFactory;
 import my.bank.jpa.repos.AcctRepo;
@@ -38,7 +39,7 @@ public class MainTest {
 	private ApplicationContext context;
 
 	@Autowired
-	private AccountFactory acctCreator;
+	private AccountFactory accountCreator;
 
 	@Autowired
 	private AcctRepo acctRepo;
@@ -63,8 +64,11 @@ public class MainTest {
 		String accountId = "100142006678";
 		String currency = "SEK";
 		BigDecimal amount = new BigDecimal(100);
+		
+		AccountDto acctDto = new AccountDto.AccountDtoBuilder().setAcctId(accountId).setCurrency(currency).setAmount(amount).buildDto();
+		Account account = accountCreator.newEntity(acctDto);
 
-		Account account = acctCreator.setAcctId(accountId).setCurrency(currency).setCurAmt(amount).buildEntity();
+		
 		assertNotNull(account, "account NULL !");
 		Optional<Account> accountOpt = acctRepo.findById(account.getId());
 
@@ -97,7 +101,9 @@ public class MainTest {
 		String currency = "SEK";
 		BigDecimal amount = new BigDecimal(100);
 
-		Account account = acctCreator.setAcctId(accountId).setCurrency(currency).setCurAmt(amount).buildEntity();
+		AccountDto acctDto = new AccountDto.AccountDtoBuilder().setAcctId(accountId).setCurrency(currency).setAmount(amount).buildDto();
+		Account account = accountCreator.newEntity(acctDto);
+
 		assertNotNull(account, "account NULL !");
 		Optional<Account> accountOpt = acctRepo.findById(account.getId());
 
@@ -133,8 +139,10 @@ public class MainTest {
 		String accountId = "009142006678";
 		String currency = "USD";
 		BigDecimal amount = new BigDecimal(100);
-
-		Account account = acctCreator.setAcctId(accountId).setCurrency(currency).setCurAmt(amount).buildEntity();
+		
+		AccountDto acctDto = new AccountDto.AccountDtoBuilder().setAcctId(accountId).setCurrency(currency).setAmount(amount).buildDto();
+		Account account = accountCreator.newEntity(acctDto);
+		
 		assertNotNull(account, "account NULL !");
 		Optional<Account> accountOpt = acctRepo.findById(account.getId());
 
@@ -171,8 +179,10 @@ public class MainTest {
 		String accountId = "099142006678";
 		String currency = "USD";
 		BigDecimal amount = new BigDecimal(100);
-
-		Account account = acctCreator.setAcctId(accountId).setCurrency(currency).setCurAmt(amount).buildEntity();
+		
+		AccountDto acctDto = new AccountDto.AccountDtoBuilder().setAcctId(accountId).setCurrency(currency).setAmount(amount).buildDto();
+		Account account = accountCreator.newEntity(acctDto);		
+		
 		assertNotNull(account, "account NULL !");
 		Optional<Account> accountOpt = acctRepo.findById(account.getId());
 
@@ -209,8 +219,9 @@ public class MainTest {
 		String accountId = "099142006678";
 		String currency = "EUR";
 		BigDecimal amount = new BigDecimal(100000);
-
-		Account account = acctCreator.setAcctId(accountId).setCurrency(currency).setCurAmt(amount).buildEntity();
+		
+		AccountDto acctDto = new AccountDto.AccountDtoBuilder().setAcctId(accountId).setCurrency(currency).setAmount(amount).buildDto();
+		Account account = accountCreator.newEntity(acctDto);
 
 		assertNotNull(account, "account NULL !");
 		Optional<Account> accountOpt = acctRepo.findById(account.getId());

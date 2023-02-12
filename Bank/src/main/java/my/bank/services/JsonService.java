@@ -24,6 +24,8 @@ import com.networknt.schema.JsonSchemaFactory;
 import com.networknt.schema.ValidationMessage;
 import com.networknt.schema.SpecVersion.VersionFlag;
 
+import my.bank.entities.AccountDto;
+import my.bank.entities.AccountDto.AccountDtoBuilder;
 import my.bank.entities.creator.AccountFactory;
 
 @Component
@@ -67,7 +69,9 @@ public class JsonService {
 
 						String currency = currencyAmount.path("currency").asText();
 						BigDecimal amount = currencyAmount.path("amount").decimalValue();
-						accountCreator.setAcctId(acctNo).setCurrency(currency).setCurAmt(amount).buildEntity();
+						
+						AccountDto acctDto = new AccountDto.AccountDtoBuilder().setAcctId(acctNo).setAmount(amount).setCurrency(currency).buildDto();
+						accountCreator.newEntity(acctDto);
 						logger.info("Account no " + acctNo + " added");
 					}
 				}

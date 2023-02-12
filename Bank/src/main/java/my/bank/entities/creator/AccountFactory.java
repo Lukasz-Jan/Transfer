@@ -1,14 +1,12 @@
 package my.bank.entities.creator;
 
-import java.math.BigDecimal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
 import my.bank.entities.Account;
-import my.bank.entities.AccountPK;
+import my.bank.entities.AccountDto;
 import my.bank.jpa.repos.AcctRepo;
 
 
@@ -16,96 +14,47 @@ import my.bank.jpa.repos.AcctRepo;
 public class AccountFactory {
 
 	public static final Logger log = LoggerFactory.getLogger(AccountFactory.class);
-	private String acctId;
-	private String currency;
-	private BigDecimal amount;
 
 	@Autowired
 	private AcctRepo acctRepo;
-
-	@Transactional
-	public Account buildZeroMoneyEntity() {
-
-		if(!pKCheck()) {
-			log.error("Account entity not created");
-			return null;
-		}
-		
-		AccountPK accountPk = new AccountPK.AccountPKBuilder().setAcctId(acctId).setCurrency(currency).build();
-		Account accountDto = new Account.AccountBuilder().setId(accountPk).setCurAmt(BigDecimal.ZERO)
-				.build();
-
-		Account account = persist(accountDto);
-		return account;
-	}
 	
 	@Transactional
-	public Account buildEntity() {
+	public Account newEntity(AccountDto dto) {
 
-		if(!pKCheck()) {
+		if(!pKCheck(dto)) {
 			log.error("Account entity not created");
 			return null;
 		}
-		AccountPK accountPk = new AccountPK.AccountPKBuilder().setAcctId(this.acctId).setCurrency(this.currency).build();
-		Account accountDto = new Account.AccountBuilder().setId(accountPk).setCurAmt(this.amount)
-				.build();
 
-		Account account = persist(accountDto);
+		Account accountEnt = dto.createEntity();		
+		Account account = persist(accountEnt);
 		return account;
 	}
 
-	private Account persist(Account accDto) {
+	private Account persist(Account accEnt) {
 		
-		Account accountEnt = null;
+		Account account = null;
 		try {
-			accountEnt = acctRepo.saveAndFlush(accDto);
-			clearFields();
+			account = acctRepo.saveAndFlush(accEnt);
 		} catch (Exception e) {
 			log.error("Account entity creation failed");
 		}
-		finally {
-			clearFields();
-		}
-		return accountEnt;
+		return account;
 	}
 	
-	private boolean pKCheck() {
 
-		if(this.acctId == null || this.currency == null) {
+	private boolean pKCheck(AccountDto dto) {
+
+		if(dto.getAcctId() == null || dto.getCurrency() == null) {
+			
 			log.info("Account no or currrency null - creation failed ");
-			clearFields();
 			return false;
 		}
 		
-		if(this.currency.length() != 3) {
+		if(dto.getCurrency().length() != 3) {
 			log.info("Account entity creation wrong currency ");
-			clearFields();
 			return false;
 		}
 		return true;
-	}
-	
-	
-	
-	public AccountFactory setAcctId(String acctId) {
-		this.acctId = acctId;
-		return this;
-	}
-
-	public AccountFactory setCurrency(String currency) {
-		this.currency = currency;
-		return this;
-	}
-
-	public AccountFactory setCurAmt(BigDecimal curAmt) {
-		this.amount = curAmt;
-		return this;
-	}
-	
-	private void clearFields() {
-		
-		this.acctId = null;
-		this.currency = null;
-		this.amount = null;
 	}
 }
